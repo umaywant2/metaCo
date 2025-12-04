@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "metaCo",
+  "description": "Minimal meta-service for routing Copilot queries across silos.",
+  "version": "0.1",
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icons/icon48.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
