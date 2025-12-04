@@ -1,5 +1,5 @@
 // metaCo background script
-// Syncs toggle state between browser popup and Native Messaging host
+// Syncs toggle state and routes queries to Copilot silos
 
 let enabled = false;
 let port = null;
@@ -46,6 +46,31 @@ chrome.runtime.onMessage.addListener((msg) => {
     updateState(msg.enabled);
   }
 });
+
+// --- Routing Logic Stub ---
+function routeQuery(query) {
+  if (!enabled) {
+    console.log("metaCo is OFF — query blocked.");
+    return;
+  }
+
+  // Simple intent detection
+  if (query.includes("code")) {
+    forwardToSilo("GitHub Copilot", query);
+  } else if (query.includes("doc") || query.includes("write")) {
+    forwardToSilo("Edge Copilot", query);
+  } else if (query.includes("crm") || query.includes("sales")) {
+    forwardToSilo("Dynamics Copilot", query);
+  } else {
+    forwardToSilo("Default Copilot", query);
+  }
+}
+
+// Stub: forward query to silo
+function forwardToSilo(silo, query) {
+  console.log(`Routing query "${query}" → ${silo}`);
+  // Future: implement actual API call or silo integration
+}
 
 // Initialize
 connectNative();
