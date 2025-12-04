@@ -599,3 +599,199 @@ function writeMessage(msg) {
 This gives metaCo a **secure bridge** between browser and CLI, completing the cross‑platform sync loop.  
 
 I can scaffold the **extension → host messaging code** next (inside `background.js`) so you see how to call `connectNative` and exchange messages.
+
+---
+
+Excellent — let’s scaffold the **extension → host messaging code** so your `background.js` can talk to the Native Messaging host (`com.metaco.host`). This closes the loop between browser and CLI.
+
+---
+
+## 📂 Updated `background.js` with Native Messaging
+
+```javascript
+// metaCo background script
+// Syncs toggle state between browser popup and Native Messaging host
+
+let enabled = false;
+let port = null;
+
+// Connect to native messaging host
+function connectNative() {
+  port = chrome.runtime.connectNative("com.metaco.host");
+
+  port.onMessage.addListener((msg) => {
+    if (msg.success && msg.data) {
+      enabled = msg.data.enabled;
+      console.log(`metaCo state synced: ${enabled ? 'ON' : 'OFF'}`);
+    } else if (msg.error) {
+      console.error("Native host error:", msg.error);
+    }
+  });
+
+  port.onDisconnect.addListener(() => {
+    console.warn("Disconnected from native host");
+    port = null;
+  });
+}
+
+// Request state from host
+function requestState() {
+  if (port) {
+    port.postMessage({ type: "read" });
+  }
+}
+
+// Update state via host
+function updateState(newState) {
+  enabled = newState;
+  console.log(`metaCo toggled ${enabled ? 'ON' : 'OFF'} (extension)`);
+
+  if (port) {
+    port.postMessage({ type: "write", data: { enabled } });
+  }
+}
+
+// Listen for popup toggle
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === "TOGGLE") {
+    updateState(msg.enabled);
+  }
+});
+
+// Initialize
+connectNative();
+setInterval(requestState, 5000); // poll every 5s
+```
+
+---
+
+## 🔑 How It Works
+- **`connectNative()`** → opens a channel to `com.metaco.host`.  
+- **`requestState()`** → asks host for current CLI state (`read`).  
+- **`updateState()`** → writes new state to host (`write`).  
+- **Polling** → every 5s, extension syncs with CLI state file.  
+- **Popup harmony** → toggling in popup sends `TOGGLE` → extension updates host → CLI stays aligned.  
+
+---
+
+## 📐 Next Steps
+1. Test round‑trip:  
+   - Run CLI (`metaco.sh on` or `metaco.ps1 off`).  
+   - Extension polls host → logs correct state.  
+   - Toggle popup → host updates state file → CLI sees change.  
+2. Add **routing logic**: when `enabled = true`, forward queries to Copilot silos; when `false`, block routing.  
+3. Document this in `scaffolding.md` so developers see the sync loop clearly.  
+
+---
+
+Now metaCo has a **full sync cycle**: browser ↔ native host ↔ CLI state file.  
+
+---
+
+Perfect — let’s scaffold the **basic routing logic stub** inside `background.js`. This will give metaCo the ability to detect intent keywords and forward queries to the right Copilot silo. It’s minimal, but sets the stage for richer routing later.
+
+---
+
+## 📂 Routing Logic Stub (`background.js`)
+
+```javascript
+// metaCo background script
+// Syncs toggle state and routes queries to Copilot silos
+
+let enabled = false;
+let port = null;
+
+// Connect to native messaging host
+function connectNative() {
+  port = chrome.runtime.connectNative("com.metaco.host");
+
+  port.onMessage.addListener((msg) => {
+    if (msg.success && msg.data) {
+      enabled = msg.data.enabled;
+      console.log(`metaCo state synced: ${enabled ? 'ON' : 'OFF'}`);
+    } else if (msg.error) {
+      console.error("Native host error:", msg.error);
+    }
+  });
+
+  port.onDisconnect.addListener(() => {
+    console.warn("Disconnected from native host");
+    port = null;
+  });
+}
+
+// Request state from host
+function requestState() {
+  if (port) {
+    port.postMessage({ type: "read" });
+  }
+}
+
+// Update state via host
+function updateState(newState) {
+  enabled = newState;
+  console.log(`metaCo toggled ${enabled ? 'ON' : 'OFF'} (extension)`);
+
+  if (port) {
+    port.postMessage({ type: "write", data: { enabled } });
+  }
+}
+
+// Listen for popup toggle
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === "TOGGLE") {
+    updateState(msg.enabled);
+  }
+});
+
+// --- Routing Logic Stub ---
+function routeQuery(query) {
+  if (!enabled) {
+    console.log("metaCo is OFF — query blocked.");
+    return;
+  }
+
+  // Simple intent detection
+  if (query.includes("code")) {
+    forwardToSilo("GitHub Copilot", query);
+  } else if (query.includes("doc") || query.includes("write")) {
+    forwardToSilo("Edge Copilot", query);
+  } else if (query.includes("crm") || query.includes("sales")) {
+    forwardToSilo("Dynamics Copilot", query);
+  } else {
+    forwardToSilo("Default Copilot", query);
+  }
+}
+
+// Stub: forward query to silo
+function forwardToSilo(silo, query) {
+  console.log(`Routing query "${query}" → ${silo}`);
+  // Future: implement actual API call or silo integration
+}
+
+// Initialize
+connectNative();
+setInterval(requestState, 5000); // poll every 5s
+```
+
+---
+
+## 🔑 What This Adds
+- **Intent detection**: simple keyword matching (`code`, `doc`, `crm`, etc.).  
+- **Routing stub**: logs which silo the query would go to.  
+- **Enabled check**: only routes when metaCo is ON.  
+- **Future hooks**: replace `forwardToSilo()` with real API calls or integrations.  
+
+---
+
+## 📐 Next Steps
+1. Expand intent detection with a keyword → silo map (JSON config).  
+2. Add connectors for actual Copilot silos (Edge, GitHub, Dynamics).  
+3. Expose a simple API so developers can add new silos in one line.  
+4. Document routing logic in `scaffolding.md` for clarity.  
+
+---
+
+This stub makes metaCo act like a **real router prototype**: toggle ON, feed it a query, and watch it decide where to send it.  
+
+---
