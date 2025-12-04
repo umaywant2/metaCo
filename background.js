@@ -32,5 +32,9 @@ function routeQuery(query) {
 
 function forwardToSilo(silo, query) {
   console.log(`Routing query "${query}" → ${silo}`);
-  // Future: implement actual API call or silo integration
+  if (silo === "Slack Copilot") {
+    // Example: send query to Slack API
+    // fetch("https://slack.com/api/copilot", { method: "POST", body: JSON.stringify({ query }) });
+  }
 }
+
