@@ -23,6 +23,12 @@
     "deal",
     "account"
   ],
+  "Slack Copilot": [
+  "chat",
+  "slack",
+  "message",
+  "channel"
+  ],
   "Default Copilot": [
     "general",
     "ask",
