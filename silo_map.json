@@ -1,0 +1,32 @@
+{
+  "GitHub Copilot": [
+    "code",
+    "programming",
+    "dev",
+    "repo",
+    "commit",
+    "pull request"
+  ],
+  "Edge Copilot": [
+    "doc",
+    "write",
+    "draft",
+    "research",
+    "summarize",
+    "browser"
+  ],
+  "Dynamics Copilot": [
+    "crm",
+    "sales",
+    "customer",
+    "pipeline",
+    "deal",
+    "account"
+  ],
+  "Default Copilot": [
+    "general",
+    "ask",
+    "help",
+    "question"
+  ]
+}
