@@ -74,3 +74,61 @@ metaCo is designed to be **so lean and clean** that any developer can:
 ---
 
 👉 This scaffolding makes metaCo look like a **ready‑to‑remix artifact**: minimal, clear, and inviting.  
+
+---
+
+## 🚀 metaCo Build Plan
+
+### 1. **Repo Foundation**
+- ✅ Create `README.md` (we already scaffolded the skeleton).  
+- ✅ Add `LICENSE` (MIT).  
+- ✅ Seed `scaffolding.md` with architecture sketch + roadmap.  
+- 🔜 Initialize `manifest.json` for Chromium extension (minimal permissions).  
+
+---
+
+### 2. **Minimal Extension Core**
+- **Popup UI**: On/Off toggle button.  
+- **Background script**: listens for toggle state, routes queries.  
+- **Storage**: saves toggle state (`chrome.storage.local`).  
+- **Permissions**: only `activeTab` + `storage`.  
+
+---
+
+### 3. **CLI Hooks**
+- **Windows**: PowerShell script (`metaco.ps1`) → registry toggle.  
+- **Linux**: Bash script (`metaco.sh`) → systemd/dconf toggle.  
+- **Mac**: AppleScript wrapper (`metaco.applescript`).  
+- CLI commands:  
+  ```bash
+  metaco on
+  metaco off
+  ```
+
+---
+
+### 4. **Routing Logic**
+- **Intent detection**: lightweight keyword map (e.g., “code” → GitHub Copilot, “doc” → Edge Copilot).  
+- **Dispatcher**: forwards query to correct silo endpoint.  
+- **Logs**: transparent console output for every routed query.  
+
+---
+
+### 5. **Developer Invitation**
+- Keep code modular: `router.js`, `hooks/`, `cli/`.  
+- Document extension + CLI separately.  
+- Encourage remix: “Add your own silo connector in 10 lines of code.”  
+
+---
+
+### 6. **Roadmap Milestones**
+- v0.1 → Minimal toggle + routing skeleton.  
+- v0.2 → CLI hooks per OS.  
+- v0.3 → Intent detection + silo connectors.  
+- v1.0 → Public release, developer remix call.  
+
+---
+
+This plan keeps metaCo **lean, user‑focused, and remix‑ready** — exactly the kind of repo that attracts developers to fork, extend, and then explore your richer validator‑grade projects.
+
+---
