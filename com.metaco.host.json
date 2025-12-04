@@ -4,6 +4,6 @@
   "path": "/absolute/path/to/metaco_host.js",
   "type": "stdio",
   "allowed_origins": [
-    "chrome-extension://<YOUR_EXTENSION_ID>/"
+    "chrome-extension://metaCo/"
   ]
 }
