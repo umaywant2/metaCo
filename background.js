@@ -1,48 +1,52 @@
 // metaCo background script
-// Syncs toggle state between browser popup and CLI hooks
+// Syncs toggle state between browser popup and Native Messaging host
 
-// Default state
 let enabled = false;
+let port = null;
 
-// Listen for popup toggle messages
-chrome.runtime.onMessage.addListener((msg) => {
-  if (msg.type === 'TOGGLE') {
-    enabled = msg.enabled;
-    console.log(`metaCo is now ${enabled ? 'ON' : 'OFF'}`);
-    // Future: add routing logic here
-  }
-});
+// Connect to native messaging host
+function connectNative() {
+  port = chrome.runtime.connectNative("com.metaco.host");
 
-// Helper: read state file depending on OS
-async function readStateFile() {
-  // Detect platform
-  const platform = await chrome.runtime.getPlatformInfo();
-  let path;
+  port.onMessage.addListener((msg) => {
+    if (msg.success && msg.data) {
+      enabled = msg.data.enabled;
+      console.log(`metaCo state synced: ${enabled ? 'ON' : 'OFF'}`);
+    } else if (msg.error) {
+      console.error("Native host error:", msg.error);
+    }
+  });
 
-  switch (platform.os) {
-    case "win":
-      path = `${process.env.LOCALAPPDATA}\\metaCo\\state.json`;
-      break;
-    case "linux":
-      path = `${process.env.HOME}/.local/share/metaCo/state.json`;
-      break;
-    case "mac":
-      path = `${process.env.HOME}/Library/Application Support/metaCo/state.json`;
-      break;
-    default:
-      console.warn("Unsupported OS for CLI sync");
-      return;
-  }
+  port.onDisconnect.addListener(() => {
+    console.warn("Disconnected from native host");
+    port = null;
+  });
+}
 
-  try {
-    // Fetch state file via Native Messaging host (future integration)
-    // Placeholder: simulate read
-    console.log(`Checking state file at: ${path}`);
-    // In real implementation, use native messaging to read file contents
-  } catch (err) {
-    console.error("Error reading state file:", err);
+// Request state from host
+function requestState() {
+  if (port) {
+    port.postMessage({ type: "read" });
   }
 }
 
-// Periodically check CLI state file
-setInterval(readStateFile, 5000);
+// Update state via host
+function updateState(newState) {
+  enabled = newState;
+  console.log(`metaCo toggled ${enabled ? 'ON' : 'OFF'} (extension)`);
+
+  if (port) {
+    port.postMessage({ type: "write", data: { enabled } });
+  }
+}
+
+// Listen for popup toggle
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === "TOGGLE") {
+    updateState(msg.enabled);
+  }
+});
+
+// Initialize
+connectNative();
+setInterval(requestState, 5000); // poll every 5s
