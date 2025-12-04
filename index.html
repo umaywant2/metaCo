@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>metaCo — Minimal Copilot Router</title>
+  <meta name="description" content="metaCo: a minimal, user-focused router for Copilot queries across silos." />
+  <link rel="icon" href="/icons/icon48.png" type="image/png" />
+  <link rel="preload" href="/assets/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <!-- Replace with your actual logo path -->
+      <img src="/assets/metaco-logo.svg" alt="metaCo logo" class="logo" />
+      <h1>metaCo</h1>
+    </div>
+    <nav class="nav">
+      <a href="#purpose">Purpose</a>
+      <a href="#install">Install</a>
+      <a href="#usage">Usage</a>
+      <a href="#contribute">Contribute</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#credits">Credits</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section id="purpose" class="section">
+      <h2>Purpose</h2>
+      <p>metaCo is a minimal, user‑focused router for Copilot queries across silos. It’s lean, remix‑ready, and designed so any developer can extend it without touching core code.</p>
+      <ul class="bullets">
+        <li><strong>Minimal:</strong> Tiny footprint, only essential permissions.</li>
+        <li><strong>User‑focused:</strong> One‑click toggle, transparent routing.</li>
+        <li><strong>Universal:</strong> Browser extension + CLI hooks + native messaging sync.</li>
+        <li><strong>Remixable:</strong> Keyword → silo routing via JSON config.</li>
+      </ul>
+    </section>
+
+    <section id="install" class="section">
+      <h2>Install</h2>
+      <ol class="steps">
+        <li><strong>Clone repo:</strong>
+          <pre><code>git clone https://github.com/umaywant2/metaCo.git
+cd metaCo</code></pre>
+        </li>
+        <li><strong>Install dependencies (if any):</strong>
+          <pre><code>npm install</code></pre>
+        </li>
+        <li><strong>Load extension:</strong> Open your Chromium browser → Extensions → Enable Developer Mode → Load unpacked → select the <code>metaCo</code> directory.</li>
+        <li><strong>Native host:</strong> Place the native messaging manifest in your browser’s NativeMessagingHosts directory and set the absolute path to <code>metaco_host.js</code>.</li>
+        <li><strong>CLI hooks:</strong> Place <code>metaco.ps1</code>, <code>metaco.sh</code>, and <code>metaco.applescript</code> in a folder on your PATH.</li>
+      </ol>
+    </section>
+
+    <section id="usage" class="section">
+      <h2>Usage</h2>
+      <ul class="bullets">
+        <li><strong>Toggle:</strong> Use the popup button to switch metaCo ON/OFF.</li>
+        <li><strong>CLI:</strong>
+          <pre><code># Windows
+metaco.ps1 on
+metaco.ps1 off
+
+# Linux
+./metaco.sh on
+./metaco.sh off
+
+# macOS
+osascript metaco.applescript on
+osascript metaco.applescript off</code></pre>
+        </li>
+        <li><strong>Routing:</strong> metaCo reads <code>silo_map.json</code> and forwards queries to the best‑fit silo. Update keywords to customize behavior.</li>
+      </ul>
+    </section>
+
+    <section id="contribute" class="section">
+      <h2>Contribute</h2>
+      <p>metaCo is intentionally lean to attract remixers. Add new silos and improve routing without touching core files.</p>
+      <ol class="steps">
+        <li><strong>Edit <code>silo_map.json</code>:</strong> Add a new silo and keywords.</li>
+        <li><strong>Add a connector:</strong> Implement your silo in <code>forwardToSilo()</code> or create a modular connector file.</li>
+        <li><strong>Style & docs:</strong> Keep code modular, document changes, and submit a clean PR.</li>
+      </ol>
+      <p>See <code>CONTRIBUTING.md</code> for details on style, testing, and roadmap alignment.</p>
+    </section>
+
+    <section id="roadmap" class="section">
+      <h2>Roadmap</h2>
+      <ul class="bullets">
+        <li><strong>v0.1:</strong> Toggle + JSON routing + native host sync.</li>
+        <li><strong>v0.2:</strong> Modular connectors directory and examples.</li>
+        <li><strong>v0.3:</strong> Hot‑reload of <code>silo_map.json</code>.</li>
+        <li><strong>v1.0:</strong> Public release + developer showcase.</li>
+      </ul>
+    </section>
+
+    <section id="credits" class="section">
+      <h2>Credits</h2>
+      <p>Built by Nawder Loswin as a validator‑grade, remix‑friendly artifact under the TriadicFrameworks umbrella.</p>
+      <p>License: MIT.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> metaCo — triadicframeworks.org</p>
+  </footer>
+
+  <script>
+    // Minimal dynamic year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
