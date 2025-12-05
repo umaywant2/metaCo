@@ -7,6 +7,8 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
+fs.mkdirSync(path.dirname(stateFile), { recursive: true });
+
 // Determine platform-specific state file path
 function getStateFilePath() {
   switch (os.platform()) {
