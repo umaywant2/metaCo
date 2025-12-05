@@ -1,0 +1,21 @@
+{
+  "name": "metaco",
+  "version": "1.0.0",
+  "description": "A meta service for routing 'siloed' Copliot AI queries",
+  "main": "background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umaywant2/metaCo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/umaywant2/metaCo/issues"
+  },
+  "homepage": "https://github.com/umaywant2/metaCo#readme"
+}
