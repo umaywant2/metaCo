@@ -1,13 +1,10 @@
 #!/usr/bin/env node
-
 // metaCo Native Messaging Host
 // Reads/writes state.json for CLI ↔ Extension sync
 
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-
-fs.mkdirSync(path.dirname(stateFile), { recursive: true });
 
 // Determine platform-specific state file path
 function getStateFilePath() {
@@ -58,6 +55,7 @@ function writeMessage(msg) {
         writeMessage({ success: false, error: 'State file not found' });
       }
     } else if (msg.type === 'write') {
+      // Ensure parent folder exists before writing
       fs.mkdirSync(path.dirname(stateFile), { recursive: true });
       fs.writeFileSync(stateFile, JSON.stringify(msg.data));
       writeMessage({ success: true });
