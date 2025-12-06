@@ -46,15 +46,15 @@
     <section id="install" class="section">
       <h2>Install</h2>
       <ol class="steps">
+        <li><strong>Install <a href="https://nodejs.org/en/download">Node.js</a></strong>
         <li><strong>Clone repo:</strong>
           <pre><code>git clone https://github.com/umaywant2/metaCo.git
 cd metaCo</code></pre>
         </li>
-        <li><strong>Install dependencies:</strong>
-          <pre><code>https://nodejs.org/en/download
-          node -v
-          npm -v
-          npm install</code></pre>
+        <li><strong>Verify Node.js and Install dependencies:</strong>
+          <pre><code>node -v
+npm -v
+npm install</code></pre>
         </li>
         <li><strong>Load extension:</strong> Open your Chromium browser → Extensions → Enable Developer Mode → Load unpacked → select the <code>metaCo</code> directory.</li>
         <li><strong>Native host:</strong> Place the native messaging manifest in your browser’s NativeMessagingHosts directory and set the absolute path to <code>metaco_host.js</code>.</li>
