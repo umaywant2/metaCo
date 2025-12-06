@@ -49,9 +49,13 @@ Target Copilot (Edge, GitHub, Dynamics, etc.)
 - Optional: PowerShell / Bash / AppleScript for native hooks.  
 
 ### Installation
+
+Install nodejs from - https://nodejs.org/en/download
 ```bash
 git clone https://github.com/umaywant2/metaCo.git
 cd metaCo
+node -v
+npm -v
 npm install
 ```
 
